@@ -60,20 +60,34 @@ export default function Kontakt() {
               <div className="contact-card-desc">Direkter Draht ins Team</div>
             </a>
 
-            {/* Instagram card — opens in a new tab */}
+            {/* Instagram card — hidden until account is active, remove "hidden" class to show */}
             <a
               href="https://instagram.com/ravvoclips"
               target="_blank"
               rel="noopener noreferrer"
-              className="contact-card"
+              className="contact-card hidden"
             >
               <div className="contact-card-top">
                 <div className="contact-card-label">Instagram</div>
-                {/* Arrow icon that animates on hover via CSS */}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </div>
               <div className="contact-card-value">@ravvoclips</div>
               <div className="contact-card-desc">Folg uns auf Instagram</div>
+            </a>
+
+            {/* TikTok card — hidden until account is active, remove "hidden" class to show */}
+            <a
+              href="https://www.tiktok.com/@ravvoclips"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-card hidden"
+            >
+              <div className="contact-card-top">
+                <div className="contact-card-label">TikTok</div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </div>
+              <div className="contact-card-value">@ravvoclips</div>
+              <div className="contact-card-desc">Folg uns auf TikTok</div>
             </a>
 
           </div>
