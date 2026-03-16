@@ -1,65 +1,246 @@
-import Image from "next/image";
+"use client"; // Marks this as a client component so we can use browser APIs like IntersectionObserver
+
+import { useEffect } from "react";
 
 export default function Home() {
+
+  useEffect(() => {
+    // Fade-in animation: watches each .fi element and adds class "v" when it scrolls into view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("v");
+            observer.unobserve(entry.target); // Stop watching once it's visible
+          }
+        });
+      },
+      { threshold: 0.1 } // Trigger when 10% of the element is visible
+    );
+    document.querySelectorAll(".fi").forEach((el) => observer.observe(el));
+
+    // Email obfuscation: builds the address at runtime to avoid spam bots scraping it
+    const addr = "kontakt" + "@" + "ravvo" + ".de";
+    const openMail = (e: Event) => {
+      e.preventDefault();
+      window.location.href = "mailto:" + addr;
+    };
+
+    // Inject the email address and attach click handler to the CTA button
+    const mb = document.getElementById("mailbtn");
+    const mt = document.getElementById("mailtxt");
+    if (mt) mt.textContent = addr;
+    if (mb) mb.addEventListener("click", openMail);
+
+    // Cleanup: disconnect the observer when the component unmounts
+    return () => observer.disconnect();
+  }, []); // Empty array = run once on page load
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <>
+      {/* ── NAVIGATION ── Fixed top bar with logo and contact link */}
+      <header>
+        <div className="wrap">
+          <a href="/" className="logo">
+            ravvo<b>.</b>
+          </a>
+          <a href="/kontakt" className="cta">
+            Kontakt
+          </a>
+        </div>
+      </header>
+
+      {/* ── HERO ── Full-screen opening section with headline and CTA buttons */}
+      <div className="hero">
+        <div className="wrap">
+          <h1>
+            Dein Content.
+            <br />
+            Hunderte Kanäle.
+            <br />
+            <span>Millionen Aufrufe.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p>
+            Organische Reichweite ist tot – auf Facebook, Instagram und X
+            erreichst du kaum noch deine eigenen Follower. Ravvo baut das
+            größte Clipper-Netzwerk im DACH-Raum: Wir nehmen deinen Content –
+            Podcasts, Streams, Videos, Musik – und verteilen ihn als Kurzvideos
+            organisch über TikTok, Reels, Shorts und X. Leistungsbasiert, zu
+            einem Bruchteil der Kosten von bezahlter Werbung.
           </p>
+          <div className="btns">
+            {/* Waitlist button — link will be added once the form is ready */}
+            <a href="#" className="btn-dark" onClick={(e) => e.preventDefault()}>
+              Auf die Warteliste
+            </a>
+            {/* Discord invite link for people who want to become clippers */}
+            <a href="https://discord.gg/ghJpwtS4" target="_blank" rel="noopener noreferrer" className="btn-outline">
+              Clipper werden → Discord beitreten
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* ── STATS ── Four key numbers to build credibility */}
+      <div className="stats">
+        <div className="wrap">
+          <div className="stats-row fi">
+            <div>
+              <h3>25.7<span>M</span></h3>
+              <p>TikTok-Nutzer in Deutschland</p>
+            </div>
+            <div>
+              <h3>~2.6<span>%</span></h3>
+              <p>Organische Reichweite Facebook</p>
+            </div>
+            <div>
+              <h3>&lt;1<span>€</span></h3>
+              <p>CPM mit Clip-Distribution</p>
+            </div>
+            <div>
+              <h3><span>0</span></h3>
+              <p>Clipper-Netzwerke im DACH-Raum</p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </div>
+
+      {/* ── PROBLEM ── Explains the organic reach crisis with a visual bar chart */}
+      <div className="section gray" id="problem">
+        <div className="wrap">
+          <div className="problem-grid">
+            <div className="fi">
+              <div className="tag">Das Problem</div>
+              <h2>Organische Reichweite ist im freien Fall.</h2>
+              <p className="desc">
+                Marken und Creator, die jahrelang Zielgruppen aufgebaut haben,
+                erreichen heute nur noch einen Bruchteil ihrer Follower. Der
+                einzige Weg? Bezahlte Werbung. Aber die wird teurer, und das
+                Vertrauen sinkt. Es braucht einen neuen Kanal.
+              </p>
+            </div>
+            {/* Bar chart comparing organic reach across platforms vs Ravvo */}
+            <div className="bars fi">
+              <div className="bar-row">
+                <div className="bar-label">Facebook</div>
+                <div className="bar-track"><div className="bar-fill red">2.6%</div></div>
+              </div>
+              <div className="bar-row">
+                <div className="bar-label">X / Twitter</div>
+                <div className="bar-track"><div className="bar-fill orange">3%</div></div>
+              </div>
+              <div className="bar-row">
+                <div className="bar-label">Instagram</div>
+                <div className="bar-track"><div className="bar-fill yellow">~4%</div></div>
+              </div>
+              <div className="bar-row">
+                <div className="bar-label hl">Ravvo</div>
+                <div className="bar-track"><div className="bar-fill green">Organisch &amp; skalierbar</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── HOW IT WORKS ── Three steps explaining the Ravvo process */}
+      <div className="section" id="wie">
+        <div className="wrap">
+          <div className="fi">
+            <div className="tag">So funktioniert Ravvo</div>
+            <h2>Von deinem Content zu hunderttausenden Aufrufen.</h2>
+          </div>
+          <div className="steps">
+            <div className="step fi">
+              <div className="num">01</div>
+              <h3>Du lieferst das Material</h3>
+              <p>
+                Podcasts, Streams, YouTube-Videos, Interviews, Vorträge, Musik –
+                egal welches Format, solange es Langformat und auf Deutsch ist.
+              </p>
+            </div>
+            <div className="step fi">
+              <div className="num">02</div>
+              <h3>Clipper schneiden &amp; posten</h3>
+              <p>
+                Unser Netzwerk aus deutschsprachigen Clippern schneidet die
+                besten Momente raus und postet sie auf ihren eigenen Kanälen –
+                TikTok, Reels, Shorts, X.
+              </p>
+            </div>
+            <div className="step fi">
+              <div className="num">03</div>
+              <h3>Du zahlst pro Aufruf</h3>
+              <p>
+                Kein Abo, keine Pauschale. Du zahlst nur für verifizierte
+                Aufrufe – CPM-basiert, transparent und deutlich günstiger als
+                jede bezahlte Kampagne.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── WHY RAVVO ── Three benefit cards explaining the value proposition */}
+      <div className="section gray">
+        <div className="wrap">
+          <div className="fi">
+            <div className="tag">Warum Ravvo</div>
+            <h2>Bezahlte Werbung ist teuer. Clipping ist es nicht.</h2>
+          </div>
+          <div className="why-grid">
+            <div className="why-card fi">
+              <div className="icon">⚡</div>
+              <h3>Extrem niedriger CPM</h3>
+              <p>
+                Organische Clips kosten einen Bruchteil von bezahlter Werbung.
+                Gleiche Reichweite, weniger Budget.
+              </p>
+            </div>
+            <div className="why-card fi">
+              <div className="icon">🔥</div>
+              <h3>Echte Kanäle, echte Aufrufe</h3>
+              <p>
+                Keine Bots, keine künstliche Reichweite. Clipper posten auf
+                ihren eigenen, aktiven Kanälen mit echten Followern.
+              </p>
+            </div>
+            <div className="why-card fi">
+              <div className="icon">🎯</div>
+              <h3>Vier Plattformen gleichzeitig</h3>
+              <p>
+                Ein Clip, vier Kanäle. TikTok, Instagram Reels, YouTube Shorts
+                und X – alles gleichzeitig und organisch.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── CTA ── Final call to action with email button (address injected by useEffect) */}
+      <div className="cta-block" id="kontakt">
+        <div className="wrap">
+          <div className="fi">
+            <div className="tag">Bereit?</div>
+            <h2>Clip-Distribution für den DACH-Raum. Ab 2026.</h2>
+            <p>
+              Ravvo startet bald. Melde dich auf der Warteliste – als Creator,
+              Podcaster oder Clipper.
+            </p>
+            <div className="btns">
+              <a href="#" id="mailbtn" className="btn-accent">
+                <span id="mailtxt"></span> {/* Email address filled in by useEffect */}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── FOOTER ── Minimal footer with copyright */}
+      <footer>
+        <div className="wrap">
+          <p>© 2026 ravvo.</p>
+        </div>
+      </footer>
+    </>
   );
 }
