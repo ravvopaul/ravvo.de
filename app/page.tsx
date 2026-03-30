@@ -69,12 +69,7 @@ export default function Home() {
             einem Bruchteil der Kosten von bezahlter Werbung.
           </p>
           <div className="btns">
-            {/* Waitlist button — link will be added once the form is ready */}
-            <a href="#" className="btn-dark" onClick={(e) => e.preventDefault()}>
-              Auf die Warteliste
-            </a>
-            {/* Discord invite link for people who want to become clippers */}
-            <a href="https://discord.gg/ghJpwtS4" target="_blank" rel="noopener noreferrer" className="btn-outline">
+            <a href="https://discord.gg/kmetRxTANM" target="_blank" rel="noopener noreferrer" className="btn-dark" style={{ width: '100%', textAlign: 'center' }}>
               Clipper werden → Discord beitreten
             </a>
           </div>
